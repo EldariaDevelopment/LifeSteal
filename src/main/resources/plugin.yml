@@ -1,0 +1,16 @@
+name: LifeSteal
+version: '1.0'
+main: e.lifeSteal.LifeSteal
+api-version: '1.21'
+authors: [ Makenna ]
+description: Literally just a CombatCore
+website: https://github.com/EldariaDevelopment
+commands:
+  lifesteal:
+    description: Main command for LifeSteal plugin
+    usage: /<command> [subcommand]
+    aliases: [ls]
+  SetHealth:
+    description: Set the health of a player
+    usage: /<command> <player> <health>
+    aliases: [sh]
