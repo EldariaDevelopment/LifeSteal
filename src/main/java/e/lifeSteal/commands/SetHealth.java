@@ -1,6 +1,7 @@
 package e.lifeSteal.commands;
 
 import e.lifeSteal.LifeSteal;
+import e.lifeSteal.Methods.UpdateHearts;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -40,12 +41,12 @@ public class SetHealth implements CommandExecutor {
         // Update the player's health
         try{
             this.plugin.getHeartsDatabase().setPlayerHealth(targetPlayer, amount);
+            this.plugin.getUpdateHearts().UpdatePlayerDisplayHeart(targetPlayer, amount);
             sender.sendMessage("Set health of player " + playerName + " to " + amount);
         } catch (SQLException e) {
             e.printStackTrace();
             sender.sendMessage("Failed to set health for player: " + playerName);
         }
-
         return true; // Return true if the command was processed successfully
     }
 }

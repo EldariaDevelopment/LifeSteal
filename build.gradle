@@ -2,6 +2,25 @@ plugins {
     id 'java'
     id("xyz.jpenilla.run-paper") version "2.3.1"
 }
+//sourceSets {
+//    main {
+//        java {
+//            // Use the src/main/java directory for Java source files.
+//            srcDir 'C:\\JavaPlugins\\LifeSteal'
+//        }
+//        resources {
+//            // Use the src/main/resources directory for resource files.
+//            srcDir 'C:\\JavaPlugins\\LifeSteal'
+//        }
+//    }
+//
+//}
+//buildDir( 'C:\\Servers\\Paper1.21.5\\plugins\\Whatever')
+jar {
+    destinationDirectory = file("C:\\Servers\\Paper1.21.5\\plugins")
+    // Alternatively, for a path relative to the build directory:
+    // destinationDirectory = layout.buildDirectory.dir("my-custom-libs")
+}
 
 group = 'e'
 version = '1.0'
@@ -19,7 +38,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT")
+    implementation 'org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT'
     implementation("org.xerial:sqlite-jdbc:3.50.2.0")
 }
 
@@ -41,6 +60,7 @@ java {
         toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     }
 }
+
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'

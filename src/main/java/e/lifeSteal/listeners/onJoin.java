@@ -1,19 +1,38 @@
 package e.lifeSteal.listeners;
 
-public class onJoin {
-    // This class will handle the logic for when a player joins the server
-    // It will manage heart initialization and player data loading
+import e.lifeSteal.LifeSteal;
+import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.entity.Player;
 
-    // Example method to initialize hearts for a new player
-    public void initializeHeartsForNewPlayer(String playerUUID) {
-        // Logic to set up hearts for the new player
-        System.out.println("Initializing hearts for player: " + playerUUID);
+import java.sql.SQLException;
+
+public class onJoin implements Listener {
+
+    private final LifeSteal plugin;
+
+    public onJoin(LifeSteal plugin) {
+        this.plugin = plugin;
     }
 
-    // Example method to load existing hearts for a returning player
-    public void loadHeartsForReturningPlayer(String playerUUID) {
-        // Logic to load hearts from the database or data structure
-        System.out.println("Loading hearts for player: " + playerUUID);
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent e) throws SQLException {
+
+        //if the player is new, add them to the database
+        if (!e.getPlayer().hasPlayedBefore()){
+            Bukkit.broadcastMessage("Player joined for the first time: " + e.getPlayer().getName());
+            //add the player to the database
+            this.plugin.getHeartsDatabase().addPlayer(e.getPlayer());
+        }
+        this.plugin.getHeartsDatabase().addPlayer(e.getPlayer());
+
+        Player player = e.getPlayer();
+        int health = plugin.getHeartsDatabase().getPlayerHealth(player);
+        player.getAttribute(org.bukkit.attribute.Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
+
     }
+
 
 }

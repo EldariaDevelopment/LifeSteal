@@ -6,11 +6,27 @@ authors: [ Makenna ]
 description: Literally just a CombatCore
 website: https://github.com/EldariaDevelopment
 commands:
-  lifesteal:
+  ls:
     description: Main command for LifeSteal plugin
     usage: /<command> [subcommand]
-    aliases: [ls]
+    aliases: [lifesteal, lsplugin]
   SetHealth:
     description: Set the health of a player
     usage: /<command> <player> <health>
     aliases: [sh]
+  GiveDashSword:
+    description: Gives a player a dash sword
+    usage: /<command> <player>
+    aliases: [gds]
+  ResetHearts:
+    description: Resets the hearts of a player
+    usage: /<command> <player>
+    aliases: [rh]
+  CheckHealth:
+    description: Checks the health of a player
+    usage: /<command> <player>
+    aliases: [ch]
+  GiveHyperion:
+    description: Gives a player a Hyperion
+    usage: /<command> <player>
+    aliases: [gh]
