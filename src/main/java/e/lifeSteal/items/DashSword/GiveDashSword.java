@@ -1,4 +1,4 @@
-package e.lifeSteal.item.DashSword;
+package e.lifeSteal.items.DashSword;
 
 import e.lifeSteal.LifeSteal;
 import org.bukkit.Bukkit;
@@ -10,7 +10,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.entity.Player;
 
 public class GiveDashSword implements CommandExecutor {

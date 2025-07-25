@@ -1,4 +1,4 @@
-package e.lifeSteal.item.Hyperion;
+package e.lifeSteal.items.Hyperion;
 
 import e.lifeSteal.LifeSteal;
 import org.bukkit.Bukkit;

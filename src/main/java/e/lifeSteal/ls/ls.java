@@ -1,7 +1,6 @@
 package e.lifeSteal.ls;
 
 import e.lifeSteal.LifeSteal;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,13 +8,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static e.lifeSteal.Methods.SendMultiline.sendMultiline;
+import static e.lifeSteal.methods.SendMultiline.sendMultiline;
 
 public class ls implements CommandExecutor, TabCompleter {
     private final LifeSteal plugin;
@@ -119,5 +117,46 @@ public class ls implements CommandExecutor, TabCompleter {
             return completions;
         }
         return Collections.emptyList();
-    }
+//    }
+//    String sub = args[0].toLowerCase();
+//
+//        try {
+//        switch (sub) {
+//            case "checkhearts":
+//                plugin.getCheckHearts().checkHeartsAutoFill(args, Prefix);
+//                return completions;
+//            case "config":
+//                sender.sendMessage("§eConfig command...");
+//                break;
+//            case "edithearts":
+//                plugin.getEditHearts().editHearts(player, args, Prefix);
+//                break;
+//            case "eliminate":
+//                sender.sendMessage("§eEliminating player...");
+//                break;
+//            case "givehearts":
+//                sender.sendMessage("§eGiving hearts...");
+//                break;
+//            case "help":
+//                sendMultiline(player,
+//                        "§4§nCommands:",
+//                        "§7§c/withdraw <amount>§7 - §fWithdraw physical hearts§c/ls recipe §7- §fView the crafting recipe for hearts",
+//                        "§c/ls status §7- §fView the current lifesteal settings§c/ls config§7 [§4ls.admin§7] - §fOpen the config gui",
+//                        "§c/ls givehearts <amount>§7 [§4ls.admin§7] §fGive yourself physical hearts§c/ls edithearts <player> [+/-]<amount>§7 - [§4ls.mod§7] §fEdit a player's hearts",
+//                        "§c/ls checkhearts <player>§7 [§4ls.mod§7] - §fCheck a player's hearts§c/ls revive <player>§7 [§4ls.mod§7] - §fRevive a player who is eliminated§c/ls eliminate <player>§7 [§4ls.mod§7] - §fEliminate a player",
+//                        splitter);
+//                break;
+//            case "recipe":
+//                sender.sendMessage("§eRecipe command...");
+//                break;
+//            case "revive":
+//                sender.sendMessage("§eReviving player...");
+//                break;
+//            case "status":
+//                sender.sendMessage("§eStatus command...");
+//                break;
+//            default:
+//                sender.sendMessage("§cUnknown subcommand. Use /" + label + " help");
+//                break;
+        }
 }

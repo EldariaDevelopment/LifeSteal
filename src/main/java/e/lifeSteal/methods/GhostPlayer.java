@@ -1,4 +1,4 @@
-package e.lifeSteal.Methods;
+package e.lifeSteal.methods;
 
 public class GhostPlayer {
     public void checkGhost() {

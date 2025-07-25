@@ -5,6 +5,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EditHearts {
     private final LifeSteal plugin;
@@ -22,7 +24,7 @@ public class EditHearts {
             player.sendMessage("§c/ls edithearts <player> <amount>");
             return;
         }
-        Integer amount = Integer.parseInt(args[2]);
+        int amount = Integer.parseInt(args[2]);
         Player target = Bukkit.getPlayer(args[1]);
         if (target == null) {
             player.sendMessage(Prefix + "§cPlayer not found: " + args[1]);
@@ -36,5 +38,15 @@ public class EditHearts {
         plugin.getHeartsDatabase().setPlayerHealth(target, amount * 2);
         plugin.getUpdateHearts().UpdatePlayerDisplayHeart(target, amount * 2);
         player.sendMessage(Prefix + "§rUpdated§c " + target.getName() + "§r's hearts: §c" + oldHealth + "§7->§c" + amount);
+
     }
+//    public String[] getEditHeartsAutoFill(String[] args) throws SQLException {
+
+//List<String> completions = new ArrayList<>();
+//        if (args.length == 2) {
+//        } else if (args.length == 3) {
+//            return new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+//        }
+//        return new String[]{};
+//    }
 }

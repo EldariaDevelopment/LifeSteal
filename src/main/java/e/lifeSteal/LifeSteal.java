@@ -1,21 +1,22 @@
 package e.lifeSteal;
 
-import e.lifeSteal.Methods.UpdateHearts;
-import e.lifeSteal.Methods.SendMultiline;
+import e.lifeSteal.methods.UpdateHearts;
+import e.lifeSteal.methods.SendMultiline;
 import e.lifeSteal.commands.CheckHealth;
 import e.lifeSteal.commands.ResetHearts;
 import e.lifeSteal.commands.SetHealth;
 import e.lifeSteal.ls.CheckHearts;
 import e.lifeSteal.ls.EditHearts;
 import e.lifeSteal.ls.ls;
-import e.lifeSteal.database.Database;
-import e.lifeSteal.item.DashSword.DashSwordLogic;
-import e.lifeSteal.item.DashSword.GiveDashSword;
-import e.lifeSteal.item.Hyperion.HyperionGive;
-import e.lifeSteal.item.Hyperion.HyperionLogic;
+import e.lifeSteal.database.SQLite.PlayerDatabase;
+import e.lifeSteal.items.DashSword.DashSwordLogic;
+import e.lifeSteal.items.DashSword.GiveDashSword;
+import e.lifeSteal.items.Hyperion.HyperionGive;
+import e.lifeSteal.items.Hyperion.HyperionLogic;
 import e.lifeSteal.listeners.onJoin;
 import e.lifeSteal.listeners.onKill;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -23,16 +24,24 @@ import java.sql.SQLException;
 
 public final class LifeSteal extends JavaPlugin {
 
+    public static LifeSteal plugin;
+    public LifeSteal() {
+        plugin = this;
+    }
 
     File configFile = new File(getDataFolder(), "config.yml");
 
 
-    private Database database;
+    private PlayerDatabase playerDatabase;
     private UpdateHearts updateHearts; // Change type here
     private SendMultiline sendMultiline; // Change type here
 
     private CheckHearts checkHearts;
     private EditHearts editHearts; // Change type here
+
+    public static Plugin getInstance() {
+        return plugin;
+    }
 
 
     @Override
@@ -49,7 +58,7 @@ public final class LifeSteal extends JavaPlugin {
                 getDataFolder().mkdirs();
             }
 
-            database = new Database(getDataFolder().getAbsolutePath() + "/PlayerData.db");
+            playerDatabase = new PlayerDatabase(getDataFolder().getAbsolutePath() + "/PlayerData.db");
 
 
         } catch (SQLException e) {
@@ -77,14 +86,14 @@ public final class LifeSteal extends JavaPlugin {
     @Override
     public void onDisable() {
         try {
-            database.closeConnection();
+            playerDatabase.closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public Database getHeartsDatabase() {
-        return database;
+    public PlayerDatabase getHeartsDatabase() {
+        return playerDatabase;
     }
     public UpdateHearts getUpdateHearts() {
         return updateHearts;

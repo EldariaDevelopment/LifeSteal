@@ -1,6 +1,5 @@
-package e.lifeSteal.Methods;
+package e.lifeSteal.methods;
 
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;

@@ -1,13 +1,13 @@
-package e.lifeSteal.database;
+package e.lifeSteal.database.SQLite;
 
 import org.bukkit.entity.Player;
 
 import java.sql.*;
 
-public class Database {
+public class PlayerDatabase {
     private final Connection connection;
 
-    public Database(String path) throws SQLException {
+    public PlayerDatabase(String path) throws SQLException {
         connection = DriverManager.getConnection("jdbc:sqlite:" + path);
         try (Statement statement = connection.createStatement()) {
             statement.execute("CREATE TABLE IF NOT EXISTS players (" +
@@ -31,7 +31,7 @@ public class Database {
     public void addPlayer(Player player) throws SQLException{
         try(PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO players (uuid, username) VALUES (?, ?)")){
             preparedStatement.setString(1, player.getUniqueId().toString());
-            preparedStatement.setString(2, player.getDisplayName().toString());
+            preparedStatement.setString(2, player.getDisplayName());
             preparedStatement.executeUpdate();
         }
 

@@ -1,7 +1,6 @@
 package e.lifeSteal.commands;
 
 import e.lifeSteal.LifeSteal;
-import e.lifeSteal.Methods.UpdateHearts;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

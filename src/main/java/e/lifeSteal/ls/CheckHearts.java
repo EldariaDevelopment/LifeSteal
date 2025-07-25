@@ -2,7 +2,6 @@ package e.lifeSteal.ls;
 
 import e.lifeSteal.LifeSteal;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.sql.SQLException;

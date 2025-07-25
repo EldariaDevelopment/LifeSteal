@@ -1,9 +1,8 @@
-package e.lifeSteal.Methods;
+package e.lifeSteal.methods;
 
 import e.lifeSteal.LifeSteal;
 import org.bukkit.entity.Player;
 
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class UpdateHearts {
