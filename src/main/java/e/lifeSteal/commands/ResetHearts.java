@@ -29,9 +29,13 @@ public class ResetHearts implements CommandExecutor {
             sender.sendMessage("Player not found: " + playerName);
             return true;
         }
+        if (!sender.hasPermission("ls.mod")) {
+            sender.sendMessage("You do not have permission to use Hyperion.");
+            return true;
+        }
 
         try {
-            this.plugin.getHeartsDatabase().setPlayerHealth(targetPlayer, 20); // Reset to default health (20)
+            this.plugin.getPlayerDatabase().setPlayerHealth(targetPlayer, 20); // Reset to default health (20)
             this.plugin.getUpdateHearts().UpdatePlayerDisplayHeart(targetPlayer, 20);
             sender.sendMessage("Reset hearts of player " + playerName + " to default.");
         } catch (SQLException e) {

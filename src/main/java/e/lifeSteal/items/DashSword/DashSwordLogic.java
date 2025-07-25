@@ -35,6 +35,11 @@ public class DashSwordLogic implements Listener {
             return;
         }
         if(event.getHand() != null && isDashSword(player.getInventory().getItem(event.getHand()))){
+            if (!player.hasPermission("DashSword.use")) {
+                player.sendMessage("You do not have permission to use Hyperion.");
+                return;
+            }
+
             long now = System.currentTimeMillis();
             long lastDash = cooldowns.getOrDefault(player.getUniqueId(), 0L);
             if (now - lastDash < 3000) {

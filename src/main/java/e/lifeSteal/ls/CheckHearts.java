@@ -31,7 +31,7 @@ public class CheckHearts {
         }
 
         try {
-            int targetPlayerHealth=plugin.getHeartsDatabase().getPlayerHealth(targetPlayer);
+            int targetPlayerHealth=plugin.getPlayerDatabase().getPlayerHealth(targetPlayer);
             player.sendMessage(Prefix +"§c"+targetPlayer.getName()+ "§r has §c" + targetPlayerHealth/2 + "§4 Hearts §ror§c " + targetPlayerHealth + " §4HP");
         } catch (SQLException e) {
             throw new RuntimeException(e);

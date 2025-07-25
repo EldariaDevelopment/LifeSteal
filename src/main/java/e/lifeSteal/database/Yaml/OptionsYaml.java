@@ -14,11 +14,7 @@ public class OptionsYaml {
     private boolean enableHelp;
     private boolean enableEliminatePlayer;
 
-    public OptionsYaml(boolean enableRevive, boolean enableStatus, boolean enableHelp, boolean enableEliminatePlayer) {
-        this.enableRevive = enableRevive;
-        this.enableStatus = enableStatus;
-        this.enableHelp = enableHelp;
-        this.enableEliminatePlayer = enableEliminatePlayer;
+    public OptionsYaml() {
     }
 
     public boolean isEnableRevive() {
@@ -45,13 +41,11 @@ public class OptionsYaml {
         return this.config;
     }
 
-
-
     public void load(){
-        file = new File(LifeSteal.getInstance().getDataFolder(), "recipes.yml");
+        file = new File(LifeSteal.getInstance().getDataFolder(), "Settings.yml");
 
         if(!file.exists())
-            LifeSteal.getInstance().saveResource("recipe.yml",false);
+            LifeSteal.getInstance().saveResource("Settings.yml",false);
 
         config = new YamlConfiguration();
         config.options().parseComments(true);
@@ -61,6 +55,7 @@ public class OptionsYaml {
             ex.printStackTrace();
         }
     }
+
     public Set<String> GetKeys(){
         return config.getKeys(true);
 
@@ -70,12 +65,11 @@ public class OptionsYaml {
 
         return config.getString(path);
     }
+
     public ItemStack GetItemStackConfig(String path){
 
         return config.getItemStack(path);
     }
-
-
 
     public void save(){
         try {
@@ -90,7 +84,6 @@ public class OptionsYaml {
         config.set(path, value);
         save();
     }
-
 
     public static OptionsYaml getInstance(){
         return instance;

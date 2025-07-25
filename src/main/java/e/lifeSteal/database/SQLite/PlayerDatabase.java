@@ -14,6 +14,8 @@ public class PlayerDatabase {
                     "uuid TEXT PRIMARY KEY, " +
                     "username TEXT NOT NULL, " +
                     "health INTEGER NOT NULL DEFAULT 20, " +
+                    "deaths INTEGER NOT NULL DEFAULT 0, " +
+                    "kills INTEGER NOT NULL DEFAULT 0, " +
                     "ghost BOOL NOT NULL DEFAULT 0)"
             );
 
@@ -70,7 +72,7 @@ public class PlayerDatabase {
             }
         }
     }
-    public void setPlayerGhost(Player player, boolean IsGhost) throws SQLException{
+    public void setPlayerGhost(Player player) throws SQLException{
 
         //if the player doesn't exist, add them
         if (!playerExists(player)){
@@ -78,13 +80,13 @@ public class PlayerDatabase {
         }
 
         try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE players SET ghost = ? WHERE uuid = ?")) {
-            preparedStatement.setBoolean(1, IsGhost);
+            preparedStatement.setBoolean(1, true);
             preparedStatement.setString(2, player.getUniqueId().toString());
             preparedStatement.executeUpdate();
         }
     }
 
-    public boolean getPlayerGhost(Player player) throws SQLException {
+    public boolean isPlayerGhost(Player player) throws SQLException {
         try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT ghost FROM players WHERE uuid = ?")) {
             preparedStatement.setString(1, player.getUniqueId().toString());
             ResultSet resultSet = preparedStatement.executeQuery();

@@ -27,22 +27,24 @@ public class onKill implements Listener {
             System.out.println("Couldn't find killer or victim, or they are the same player.");
             return;
         }
-        int TakenHearts = 2;
 
-        //Victim
-        // Check if the victim has enough hearts to lose
-        int victimHealth = plugin.getHeartsDatabase().getPlayerHealth(victim);
-        plugin.getHeartsDatabase().setPlayerHealth(victim, victimHealth - TakenHearts);
-        victimHealth = plugin.getHeartsDatabase().getPlayerHealth(victim);
-        victim.sendMessage("You have been killed by " + killer.getName() + "You have " + victimHealth/2 + " hearts left.");
+        int TakenHealth = 2;
 
-        //Killer
-        int killerHealth = plugin.getHeartsDatabase().getPlayerHealth(killer);
-        plugin.getHeartsDatabase().setPlayerHealth(killer, killerHealth + TakenHearts);
-        killerHealth = plugin.getHeartsDatabase().getPlayerHealth(killer);
-        killer.sendMessage("You have killed " + victim.getName() + " You have " + killerHealth/2 + " hearts.");
-        //update the hearts of both players
-        plugin.getUpdateHearts().UpdatePlayerDisplayHeart(killer, killerHealth);
-        plugin.getUpdateHearts().UpdatePlayerDisplayHeart(victim, victimHealth);
+        int victimHealth = plugin.getPlayerDatabase().getPlayerHealth(victim);
+        int killerHealth = plugin.getPlayerDatabase().getPlayerHealth(killer);
+
+        if (victimHealth < TakenHealth) {
+            victim.sendMessage("You do not have enough hearts to lose.");
+
+            killer.sendMessage("You cannot take hearts from " + victim.getName() + " because they do not have enough hearts." + " You will get " + victimHealth/2 + " hearts instead.";
+            killer.sendMessage("You have " + (killerHealth/2+victimHealth/2) + " hearts now.");
+            plugin.getPlayerDatabase().setPlayerHealth(victim, 2); // Set to 0 if not enough hearts
+        } else{
+            plugin.getPlayerDatabase().setPlayerHealth(victim, killerHealth + TakenHealth);
+//            killer.sendMessage("You have taken " + (TakenHealth / 2) + " hearts from " + victim.getName() + ".");
+            killer.sendMessage("You have killed " + victim.getName() + " You have " + killerHealth/2 + " hearts.");
+            plugin.getUpdateHearts().UpdatePlayerDisplayHeart(killer, killerHealth);
+        }
+
     }
 }

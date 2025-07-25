@@ -33,6 +33,10 @@ public class GiveDashSword implements CommandExecutor {
             sender.sendMessage("Player not found: " + playerName);
             return true;
         }
+        if (!player.hasPermission("DashSword.use")) {
+            player.sendMessage("You do not have permission to use Hyperion.");
+            return true ;
+        }
 
         player.getInventory().addItem(getDashSword(plugin));
         player.sendMessage("You have been given a Dash Sword!");

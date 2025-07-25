@@ -49,7 +49,7 @@ public class ls implements CommandExecutor, TabCompleter {
                     "§7",
                     "§fA §cLife§4Steal §fskript made by §cnovystxr§f on spigot.",
                     "§fType §c/ls help§f for a list of commands",
-                    "§4§n§oContributers <3",
+                    "§4§n§oContributers ( Makenna ) <3",
                     splitter
             );
             return true;
@@ -76,6 +76,7 @@ public class ls implements CommandExecutor, TabCompleter {
                     break;
                 case "help":
                     sendMultiline(player,
+                            splitter,
                             "§4§nCommands:",
                 "§7§c/withdraw <amount>§7 - §fWithdraw physical hearts§c/ls recipe §7- §fView the crafting recipe for hearts",
                 "§c/ls status §7- §fView the current lifesteal settings§c/ls config§7 [§4ls.admin§7] - §fOpen the config gui",
@@ -87,7 +88,7 @@ public class ls implements CommandExecutor, TabCompleter {
                     sender.sendMessage("§eRecipe command...");
                     break;
                 case "revive":
-                    sender.sendMessage("§eReviving player...");
+                    plugin.getReviveSettings().revivePlayer(player, args, Prefix);
                     break;
                 case "status":
                     sender.sendMessage("§eStatus command...");

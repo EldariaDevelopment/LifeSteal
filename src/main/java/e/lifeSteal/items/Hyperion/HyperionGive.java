@@ -23,6 +23,7 @@ public class HyperionGive implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
         if (args.length != 1) {
             sender.sendMessage("Usage: /GiveDashSword <player>");
             return true;
@@ -32,6 +33,10 @@ public class HyperionGive implements CommandExecutor {
         Player player = Bukkit.getPlayer(playerName);
         if (player == null) {
             sender.sendMessage("Player not found: " + playerName);
+            return true;
+        }
+        if (!player.hasPermission("hyperion.use")) {
+            player.sendMessage("You do not have permission to use Hyperion.");
             return true;
         }
 

@@ -5,8 +5,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class EditHearts {
     private final LifeSteal plugin;
@@ -34,8 +32,8 @@ public class EditHearts {
             player.sendMessage(Prefix + "§cInvalid amount");
             return;
         }
-        int oldHealth = plugin.getHeartsDatabase().getPlayerHealth(target);
-        plugin.getHeartsDatabase().setPlayerHealth(target, amount * 2);
+        int oldHealth = plugin.getPlayerDatabase().getPlayerHealth(target);
+        plugin.getPlayerDatabase().setPlayerHealth(target, amount * 2);
         plugin.getUpdateHearts().UpdatePlayerDisplayHeart(target, amount * 2);
         player.sendMessage(Prefix + "§rUpdated§c " + target.getName() + "§r's hearts: §c" + oldHealth + "§7->§c" + amount);
 

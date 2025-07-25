@@ -1,10 +1,11 @@
 package e.lifeSteal;
 
+import e.lifeSteal.listeners.onDeath;
+import e.lifeSteal.ls.revive;
+import e.lifeSteal.methods.GhostSettings;
 import e.lifeSteal.methods.UpdateHearts;
 import e.lifeSteal.methods.SendMultiline;
-import e.lifeSteal.commands.CheckHealth;
 import e.lifeSteal.commands.ResetHearts;
-import e.lifeSteal.commands.SetHealth;
 import e.lifeSteal.ls.CheckHearts;
 import e.lifeSteal.ls.EditHearts;
 import e.lifeSteal.ls.ls;
@@ -38,6 +39,8 @@ public final class LifeSteal extends JavaPlugin {
 
     private CheckHearts checkHearts;
     private EditHearts editHearts; // Change type here
+    private GhostSettings ghostSettings;
+    private revive reviveSettings;
 
     public static Plugin getInstance() {
         return plugin;
@@ -50,6 +53,8 @@ public final class LifeSteal extends JavaPlugin {
         this.updateHearts = new UpdateHearts(this);
         this.sendMultiline = new SendMultiline(this);
         this.editHearts = new EditHearts(this);
+        this.ghostSettings = new GhostSettings(this);
+        this.reviveSettings = new revive(this);
 
 
         try {
@@ -67,15 +72,15 @@ public final class LifeSteal extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
         }
 
-        getCommand("sethealth").setExecutor(new SetHealth(this));
         getCommand("GiveDashSword").setExecutor(new GiveDashSword(this));
         getCommand("GiveHyperion").setExecutor(new HyperionGive(this));
         getCommand("ResetHearts").setExecutor(new ResetHearts(this));
-        getCommand("CheckHealth").setExecutor(new CheckHealth(this));
+
         getServer().getPluginManager().registerEvents(new DashSwordLogic(this), this);
         getServer().getPluginManager().registerEvents(new onKill(this), this);
         getServer().getPluginManager().registerEvents(new onJoin(this), this);
         getServer().getPluginManager().registerEvents(new HyperionLogic(this), this);
+        getServer().getPluginManager().registerEvents(new onDeath(this), this);
 
         getCommand("ls").setExecutor(new ls(this));
         getCommand("ls").setTabCompleter(new ls(this));
@@ -92,7 +97,7 @@ public final class LifeSteal extends JavaPlugin {
         }
     }
 
-    public PlayerDatabase getHeartsDatabase() {
+    public PlayerDatabase getPlayerDatabase() {
         return playerDatabase;
     }
     public UpdateHearts getUpdateHearts() {
@@ -107,6 +112,8 @@ public final class LifeSteal extends JavaPlugin {
     public EditHearts getEditHearts() {
         return editHearts;
     }
+    public GhostSettings getGhostSettings() { return ghostSettings; }
+    public revive getReviveSettings() { return reviveSettings; }
 
     public Object getSetting(String path) {
         return getConfig().get(path);
