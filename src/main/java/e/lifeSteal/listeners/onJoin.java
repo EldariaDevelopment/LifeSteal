@@ -30,7 +30,7 @@ public class onJoin implements Listener {
 
         Player player = e.getPlayer();
         int health = plugin.getPlayerDatabase().getPlayerHealth(player);
-        if(plugin.getGhostSettings().isGhost()){
+        if (plugin.getGhostSettings().isGhost(player)) {
             plugin.getGhostSettings().setGhost(player);
             player.sendMessage("§cYou have joined as a ghost.");
         }

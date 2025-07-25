@@ -34,9 +34,7 @@ public class onKill implements Listener {
         int killerHealth = plugin.getPlayerDatabase().getPlayerHealth(killer);
 
         if (victimHealth < TakenHealth) {
-            victim.sendMessage("You do not have enough hearts to lose.");
-
-            killer.sendMessage("You cannot take hearts from " + victim.getName() + " because they do not have enough hearts." + " You will get " + victimHealth/2 + " hearts instead.";
+            killer.sendMessage("You cannot take hearts from " + victim.getName() + " because they do not have enough hearts." + " You will get " + victimHealth/2 + " hearts instead.");
             killer.sendMessage("You have " + (killerHealth/2+victimHealth/2) + " hearts now.");
             plugin.getPlayerDatabase().setPlayerHealth(victim, 2); // Set to 0 if not enough hearts
         } else{
