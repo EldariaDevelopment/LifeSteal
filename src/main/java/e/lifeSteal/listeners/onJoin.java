@@ -1,6 +1,8 @@
 package e.lifeSteal.listeners;
 
-import e.lifeSteal.LifeSteal;
+import e.lifeSteal.ServiceManager;
+import e.lifeSteal.database.SQLite.PlayerDatabase;
+import e.lifeSteal.methods.UpdateHearts;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,10 +13,13 @@ import java.sql.SQLException;
 
 public class onJoin implements Listener {
 
-    private final LifeSteal plugin;
+    private final PlayerDatabase playerDatabase;
+    private final UpdateHearts updateHearts;
 
-    public onJoin(LifeSteal plugin) {
-        this.plugin = plugin;
+    public onJoin(ServiceManager serviceManager) {
+        this.playerDatabase = serviceManager.getService(PlayerDatabase.class);
+        this.updateHearts = serviceManager.getService(UpdateHearts.class);
+
     }
 
 
@@ -25,17 +30,17 @@ public class onJoin implements Listener {
         if (!e.getPlayer().hasPlayedBefore()){
             Bukkit.broadcastMessage("Player joined for the first time: " + e.getPlayer().getName());
             //add the player to the database
-            this.plugin.getPlayerDatabase().addPlayer(e.getPlayer());
+            this.playerDatabase.addPlayer(e.getPlayer());
         }
 
         Player player = e.getPlayer();
-        int health = plugin.getPlayerDatabase().getPlayerHealth(player);
-        if (plugin.getGhostSettings().isGhost(player)) {
-            plugin.getGhostSettings().setGhost(player);
+        int health = this.playerDatabase.getPlayerHealth(player);
+        if (this.playerDatabase.isPlayerGhost(player)) {
+            this.playerDatabase.setPlayerGhost(player);
             player.sendMessage("§cYou have joined as a ghost.");
         }
         player.getAttribute(org.bukkit.attribute.Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
-        plugin.getUpdateHearts().UpdatePlayerDisplayHeart(player, health);
+        this.updateHearts.UpdatePlayerDisplayHeart(player, health);
 
 
     }

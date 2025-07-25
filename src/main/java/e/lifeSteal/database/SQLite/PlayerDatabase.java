@@ -85,6 +85,19 @@ public class PlayerDatabase {
             preparedStatement.executeUpdate();
         }
     }
+    public void removePlayerGhost(Player player) throws SQLException{
+
+        //if the player doesn't exist, add them
+        if (!playerExists(player)){
+            addPlayer(player);
+        }
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE players SET ghost = ? WHERE uuid = ?")) {
+            preparedStatement.setBoolean(1, false);
+            preparedStatement.setString(2, player.getUniqueId().toString());
+            preparedStatement.executeUpdate();
+        }
+    }
 
     public boolean isPlayerGhost(Player player) throws SQLException {
         try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT ghost FROM players WHERE uuid = ?")) {

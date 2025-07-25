@@ -1,45 +1,28 @@
 package e.lifeSteal.database.Yaml;
 
 import e.lifeSteal.LifeSteal;
+import e.lifeSteal.ServiceManager;
+import e.lifeSteal.database.SQLite.PlayerDatabase;
+import e.lifeSteal.methods.UpdateHearts;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 public class OptionsYaml {
-    private boolean enableRevive;
-    private boolean enableStatus;
-    private boolean enableHelp;
-    private boolean enableEliminatePlayer;
-
-    public OptionsYaml() {
-    }
-
-    public boolean isEnableRevive() {
-        return enableRevive;
-    }
-
-    public boolean isEnableStatus() {
-        return enableStatus;
-    }
-
-    public boolean isEnableHelp() {
-        return enableHelp;
-    }
-
-    public boolean isEnableEliminatePlayer() {
-        return enableEliminatePlayer;
-    }
-    private final static OptionsYaml instance = new OptionsYaml();
 
     private File file;
     private YamlConfiguration config;
 
-    public FileConfiguration GetConfig() {
-        return this.config;
+    private final LifeSteal LifeSteal;
+
+    public OptionsYaml(ServiceManager serviceManager) {
+        this.LifeSteal = serviceManager.getService(LifeSteal.class);
     }
+
 
     public void load(){
         file = new File(LifeSteal.getInstance().getDataFolder(), "Settings.yml");
@@ -85,8 +68,26 @@ public class OptionsYaml {
         save();
     }
 
-    public static OptionsYaml getInstance(){
-        return instance;
+    public OptionsYaml getInstance(){
+        return this;
     }
+
+    public String getSplitter() {
+        return this.LifeSteal.getConfig().getString("splitter", "&7&m                                                                      ");
+    }
+
+    public String getNoPermMod() {
+        return this.LifeSteal.getConfig().getString("noperm_mod", "&7[&cLife&4Steal&7] &cYou are lacking the permission node &7[&4ls.mod&7]");
+    }
+    public String getNoPermAdmin() {
+        return this.LifeSteal.getConfig().getString("noperm_admin", "&7[&cLife&4Steal&7] &cYou are lacking the permission node &7[&4ls.admin&7]");
+    }
+    public String getPrefix() {
+        return this.LifeSteal.getConfig().getString("prefix", "&7[&cLife&4Steal&7] ");
+    }
+    public String getContributers() {
+        return this.LifeSteal.getConfig().getString("contributors", "Almondz_");
+    }
+
 
 }

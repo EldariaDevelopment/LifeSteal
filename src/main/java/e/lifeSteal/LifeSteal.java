@@ -1,18 +1,16 @@
 package e.lifeSteal;
 
-import e.lifeSteal.listeners.onDeath;
-import e.lifeSteal.ls.revive;
-import e.lifeSteal.methods.GhostSettings;
-import e.lifeSteal.methods.SendMultiline;
-import e.lifeSteal.commands.ResetHearts;
-import e.lifeSteal.ls.CheckHearts;
-import e.lifeSteal.ls.EditHearts;
-import e.lifeSteal.ls.ls;
-import e.lifeSteal.database.SQLite.PlayerDatabase;
+import e.lifeSteal.database.Yaml.OptionsYaml;
 import e.lifeSteal.items.DashSword.DashSwordLogic;
 import e.lifeSteal.items.DashSword.GiveDashSword;
 import e.lifeSteal.items.Hyperion.HyperionGive;
 import e.lifeSteal.items.Hyperion.HyperionLogic;
+import e.lifeSteal.listeners.onDeath;
+import e.lifeSteal.ls.Revive;
+import e.lifeSteal.methods.SendMultiline;
+import e.lifeSteal.commands.ResetHearts;
+import e.lifeSteal.ls.*;
+import e.lifeSteal.database.SQLite.PlayerDatabase;
 import e.lifeSteal.listeners.onJoin;
 import e.lifeSteal.listeners.onKill;
 import e.lifeSteal.methods.UpdateHearts;
@@ -29,18 +27,10 @@ public final class LifeSteal extends JavaPlugin {
     public LifeSteal() {
         plugin = this;
     }
+    private PlayerDatabase playerDatabase;
 
     File configFile = new File(getDataFolder(), "config.yml");
 
-
-    private PlayerDatabase playerDatabase;
-    private UpdateHearts updateHearts; // Change type here
-    private SendMultiline sendMultiline; // Change type here
-
-    private CheckHearts checkHearts;
-    private EditHearts editHearts; // Change type here
-    private GhostSettings ghostSettings;
-    private revive reviveSettings;
 
     public static Plugin getInstance() {
         return plugin;
@@ -49,12 +39,15 @@ public final class LifeSteal extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.checkHearts = new CheckHearts(this);
-        this.updateHearts = new UpdateHearts(this);
-        this.sendMultiline = new SendMultiline(this);
-        this.editHearts = new EditHearts(this);
-        this.ghostSettings = new GhostSettings(this);
-        this.reviveSettings = new revive(this);
+        ServiceManager serviceManager = new ServiceManager();
+        serviceManager.registerService(LifeSteal.class, this);
+        serviceManager.registerService(UpdateHearts.class, new UpdateHearts(this));
+        serviceManager.registerService(SendMultiline.class, new SendMultiline(this));
+        serviceManager.registerService(CheckHearts.class, new CheckHearts(serviceManager));
+        serviceManager.registerService(EditHearts.class, new EditHearts(serviceManager));
+        serviceManager.registerService(Revive.class, new Revive(serviceManager));
+        serviceManager.registerService(OptionsYaml.class, new OptionsYaml(serviceManager));
+        serviceManager.registerService(Status.class, new Status(serviceManager)); // Placeholder, will be set after database connection
 
 
         try {
@@ -74,16 +67,16 @@ public final class LifeSteal extends JavaPlugin {
 
         getCommand("GiveDashSword").setExecutor(new GiveDashSword(this));
         getCommand("GiveHyperion").setExecutor(new HyperionGive(this));
-        getCommand("ResetHearts").setExecutor(new ResetHearts(this));
+        getCommand("ResetHearts").setExecutor(new ResetHearts(serviceManager));
 
         getServer().getPluginManager().registerEvents(new DashSwordLogic(this), this);
-        getServer().getPluginManager().registerEvents(new onKill(this), this);
-        getServer().getPluginManager().registerEvents(new onJoin(this), this);
+        getServer().getPluginManager().registerEvents(new onKill(serviceManager), this);
+        getServer().getPluginManager().registerEvents(new onJoin(serviceManager), this);
         getServer().getPluginManager().registerEvents(new HyperionLogic(this), this);
-        getServer().getPluginManager().registerEvents(new onDeath(this), this);
+        getServer().getPluginManager().registerEvents(new onDeath(serviceManager), this);
 
-        getCommand("ls").setExecutor(new ls(this));
-        getCommand("ls").setTabCompleter(new ls(this));
+        getCommand("ls").setExecutor(new ls(serviceManager));
+        getCommand("ls").setTabCompleter(new ls(serviceManager));
 
         saveDefaultConfig();
     }
@@ -97,23 +90,6 @@ public final class LifeSteal extends JavaPlugin {
         }
     }
 
-    public PlayerDatabase getPlayerDatabase() {
-        return playerDatabase;
-    }
-    public UpdateHearts getUpdateHearts() {
-        return updateHearts;
-    }
-    public SendMultiline sendMultiline() {
-        return sendMultiline;
-    }
-    public CheckHearts getCheckHearts() {
-        return checkHearts;
-    }
-    public EditHearts getEditHearts() {
-        return editHearts;
-    }
-    public GhostSettings getGhostSettings() { return ghostSettings; }
-    public revive getReviveSettings() { return reviveSettings; }
 
     public Object getSetting(String path) {
         return getConfig().get(path);
@@ -125,23 +101,10 @@ public final class LifeSteal extends JavaPlugin {
     }
     public String getVersion() {
         return getDescription().getVersion();
-//        return getConfig().getString("version", "3.01");
     }
-    public String getSplitter() {
-        return getConfig().getString("splitter", "&7&m                                                                      ");
-    }
-    public String getNoPermMod() {
-        return getConfig().getString("noperm_mod", "&7[&cLife&4Steal&7] &cYou are lacking the permission node &7[&4ls.mod&7]");
-    }
-    public String getNoPermAdmin() {
-        return getConfig().getString("noperm_admin", "&7[&cLife&4Steal&7] &cYou are lacking the permission node &7[&4ls.admin&7]");
-    }
-    public String getPrefix() {
-        return getConfig().getString("prefix", "&7[&cLife&4Steal&7] ");
-    }
-    public String getContributers() {
-        return getConfig().getString("contributors", "Almondz_");
-    }
+
+    //move to yaml config
+
 //    public edithearts getEditHearts() {
 //        return new edithearts();
 //    }

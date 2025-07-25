@@ -1,6 +1,9 @@
 package e.lifeSteal.commands;
 
 import e.lifeSteal.LifeSteal;
+import e.lifeSteal.ServiceManager;
+import e.lifeSteal.database.SQLite.PlayerDatabase;
+import e.lifeSteal.methods.UpdateHearts;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,10 +13,14 @@ import org.bukkit.entity.Player;
 import java.sql.SQLException;
 
 public class ResetHearts implements CommandExecutor {
-    private final LifeSteal plugin;
 
-    public ResetHearts(LifeSteal plugin) {
-        this.plugin = plugin;
+    private final PlayerDatabase playerDatabase;
+    private final UpdateHearts updateHearts;
+
+    public ResetHearts(ServiceManager serviceManager) {
+        this.playerDatabase = serviceManager.getService(PlayerDatabase.class);
+        this.updateHearts = serviceManager.getService(UpdateHearts.class);
+
     }
 
     @Override
@@ -35,8 +42,8 @@ public class ResetHearts implements CommandExecutor {
         }
 
         try {
-            this.plugin.getPlayerDatabase().setPlayerHealth(targetPlayer, 20); // Reset to default health (20)
-            this.plugin.getUpdateHearts().UpdatePlayerDisplayHeart(targetPlayer, 20);
+            playerDatabase.setPlayerHealth(targetPlayer, 20); // Reset to default health (20)
+            updateHearts.UpdatePlayerDisplayHeart(targetPlayer, 20);
             sender.sendMessage("Reset hearts of player " + playerName + " to default.");
         } catch (SQLException e) {
             e.printStackTrace();

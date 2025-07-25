@@ -1,6 +1,9 @@
 package e.lifeSteal.ls;
 
 import e.lifeSteal.LifeSteal;
+import e.lifeSteal.ServiceManager;
+import e.lifeSteal.database.SQLite.PlayerDatabase;
+import e.lifeSteal.database.Yaml.OptionsYaml;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,20 +19,33 @@ import java.util.List;
 import static e.lifeSteal.methods.SendMultiline.sendMultiline;
 
 public class ls implements CommandExecutor, TabCompleter {
-    private final LifeSteal plugin;
+
+    private final CheckHearts checkHearts;
+    private final EditHearts editHearts;
+    private final Status status;
+    private final Revive revive;
     private final String splitter;
-    private final String version;
     private final String Prefix;
+    private final String version;
+
+    public ls(ServiceManager serviceManager) {
+        PlayerDatabase playerDatabase = serviceManager.getService(PlayerDatabase.class);
+        OptionsYaml optionsYaml = serviceManager.getService(OptionsYaml.class);
+        Status status = serviceManager.getService(Status.class);
+        this.checkHearts = serviceManager.getService(CheckHearts.class);
+        this.editHearts = serviceManager.getService(EditHearts.class);
+        this.revive = serviceManager.getService(Revive.class);
+        this.splitter = ChatColor.translateAlternateColorCodes('&', optionsYaml.getSplitter());
+        this.Prefix = ChatColor.translateAlternateColorCodes('&', optionsYaml.getPrefix());
+        this.version = LifeSteal.getInstance().getDescription().getVersion();
+        this.status = status;
+
+
+    }
+
     private static final List<String> SUBCOMMANDS = Arrays.asList(
             "checkhearts", "config", "edithearts", "eliminate", "givehearts", "help", "recipe", "revive", "status"
     );
-
-    public ls(LifeSteal plugin) {
-        this.plugin = plugin;
-        this.splitter = ChatColor.translateAlternateColorCodes('&', plugin.getSplitter());
-        this.version = plugin.getDescription().getVersion();
-        this.Prefix = ChatColor.translateAlternateColorCodes('&', plugin.getPrefix());
-    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -60,13 +76,13 @@ public class ls implements CommandExecutor, TabCompleter {
         try {
             switch (sub) {
                 case "checkhearts":
-                    plugin.getCheckHearts().checkHearts(player, args, Prefix);
+                    checkHearts.checkHearts(player, args, splitter);
                     break;
                 case "config":
                     sender.sendMessage("§eConfig command...");
                     break;
                 case "edithearts":
-                    plugin.getEditHearts().editHearts(player, args, Prefix);
+                    editHearts.editHearts(player, args, Prefix);
                     break;
                 case "eliminate":
                     sender.sendMessage("§eEliminating player...");
@@ -88,10 +104,10 @@ public class ls implements CommandExecutor, TabCompleter {
                     sender.sendMessage("§eRecipe command...");
                     break;
                 case "revive":
-                    plugin.getReviveSettings().revivePlayer(player, args, Prefix);
+                    revive.revivePlayer(player, args, Prefix);
                     break;
                 case "status":
-                    sender.sendMessage("§eStatus command...");
+                    status.getStatus(player, args, Prefix);
                     break;
                 default:
                     sender.sendMessage("§cUnknown subcommand. Use /" + label + " help");

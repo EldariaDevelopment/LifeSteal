@@ -1,21 +1,32 @@
 package e.lifeSteal.ls;
 
 import e.lifeSteal.LifeSteal;
+import e.lifeSteal.ServiceManager;
+import e.lifeSteal.database.SQLite.PlayerDatabase;
+import e.lifeSteal.database.Yaml.OptionsYaml;
+import e.lifeSteal.methods.UpdateHearts;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.sql.SQLException;
 
 public class EditHearts {
-    private final LifeSteal plugin;
 
-    public EditHearts(LifeSteal plugin) {
-        this.plugin = plugin;
+    private final CheckHearts checkHearts;
+    private final OptionsYaml optionsYaml;
+    private final PlayerDatabase playerDatabase;
+    private final UpdateHearts updateHearts;
+
+    public EditHearts(ServiceManager serviceManager) {
+        this.playerDatabase = serviceManager.getService(PlayerDatabase.class);
+        this.checkHearts = serviceManager.getService(CheckHearts.class);
+        this.optionsYaml = serviceManager.getService(OptionsYaml.class);
+        this.updateHearts = serviceManager.getService(UpdateHearts.class);
     }
 
     public void editHearts(Player player, String[] args, String Prefix) throws SQLException {
         if (!player.hasPermission("ls.mod")) {
-            player.sendMessage(plugin.getNoPermMod());
+            player.sendMessage(optionsYaml.getNoPermMod());
             return;
         }
         if (args.length != 3) {
@@ -32,9 +43,9 @@ public class EditHearts {
             player.sendMessage(Prefix + "§cInvalid amount");
             return;
         }
-        int oldHealth = plugin.getPlayerDatabase().getPlayerHealth(target);
-        plugin.getPlayerDatabase().setPlayerHealth(target, amount * 2);
-        plugin.getUpdateHearts().UpdatePlayerDisplayHeart(target, amount * 2);
+        int oldHealth = playerDatabase.getPlayerHealth(target);
+        playerDatabase.setPlayerHealth(target, amount * 2);
+        updateHearts.UpdatePlayerDisplayHeart(target, amount * 2);
         player.sendMessage(Prefix + "§rUpdated§c " + target.getName() + "§r's hearts: §c" + oldHealth + "§7->§c" + amount);
 
     }
